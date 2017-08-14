@@ -1,28 +1,43 @@
 
-(function ( $ ) {
+jQuery.fn.textWalk = function( fn, str ) {
+    console.log("to replace: " + fn);
+    var func = jQuery.isFunction(fn);
+    var remove = [];
+    this.contents().each( jwalk );
 
-    $.fn.logofy = function() {
-        return this.each(function() {
-            var logofied = '<span class="dnGrey">{dev}</span><span class="dnRed dnBold">Nomads</span>';
-            if($(this).text().search("{dev}Nomads") >= 0  && $(this).html()===$(this).text()) {
-                var content = $(this).text();
-                content = content.replace( '{dev}Nomads', logofied );
-                $(this).html( content );
-            }
-            if($(this).text().search("devNomads") >= 0 && $(this).html()===$(this).text()) {
-                var content = $(this).text();
-                content = content.replace( 'devNomads', logofied );
-                $(this).html( content );
-            }
-            if($(this).text().search("devnomads") >= 0 && $(this).html()===$(this).text()) {
-                var content = $(this).text();
-                content = content.replace( 'devnomads', logofied );
-                $(this).html( content );
-            }
-        });
-    };
+    // remove the replaced elements
+    remove.length && $(remove).remove();
 
-}(jQuery));
+    function jwalk() {
+        console.log(this.data);
+        var nn = this.nodeName.toLowerCase();
+        if( nn === '#text' ) {
+            var newValue;
+
+            if (func) {
+                newValue = fn.call(this);
+            } else {
+                newValue = this.data.replace(fn, str);
+            }
+
+            $(this).before(newValue);
+            remove.push(this)
+        } else if( this.nodeType === 1 && this.childNodes && this.childNodes[0] && nn !== 'script' && nn !== 'textarea' ) {
+            $(this).contents().each( jwalk );
+        }
+    }
+    return this;
+};
+
+jQuery.fn.logofy = function() {
+    return this.each(function() {
+        var logofied = '<span class="dnGrey">{dev}</span><span class="dnRed dnBold">Nomads</span>';
+        $(this).textWalk('{dev}Nomads',logofied);
+        $(this).textWalk('{dev}nomads',logofied);
+        $(this).textWalk('devNomads',logofied);
+        $(this).textWalk('devnomads',logofied);
+    });
+};
 
 $( document ).ready(
     function() {
@@ -35,5 +50,3 @@ $( document ).ready(
         $("span.site-name").logofy();
     }
 );
-
-console.log('Hello world 6');
