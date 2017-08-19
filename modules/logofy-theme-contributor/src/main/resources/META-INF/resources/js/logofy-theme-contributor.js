@@ -1,6 +1,5 @@
 
 jQuery.fn.textWalk = function( fn, str ) {
-    console.log("to replace: " + fn);
     var func = jQuery.isFunction(fn);
     var remove = [];
     this.contents().each( jwalk );
@@ -9,7 +8,6 @@ jQuery.fn.textWalk = function( fn, str ) {
     remove.length && $(remove).remove();
 
     function jwalk() {
-        console.log(this.data);
         var nn = this.nodeName.toLowerCase();
         if( nn === '#text' ) {
             var newValue;
