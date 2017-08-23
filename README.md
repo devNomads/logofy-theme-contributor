@@ -1,3 +1,8 @@
+
+<a href="https://travis-ci.org/devNomads/logofy-theme-contributor">
+    <img src="https://travis-ci.org/devNomads/logofy-theme-contributor.svg?branch=master" alt="Travis CI" />
+</a>
+
 # {dev}Nomads Logofy
 
 A [Liferay](https://www.liferay.com) theme contributor with one simple task: replacing occurrences of the word "devnomads" with a version with brackets around {dev} and using the logo's colors.
